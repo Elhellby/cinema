@@ -53,12 +53,8 @@ class MainActivity : ComponentActivity() {
                         val homeViewModel: HomeViewModel = hiltViewModel()
                         HomeScreen(viewModel = homeViewModel, navController = navController)
                     }
-                    composable<DetailRoute> { backStackEntry ->
-                        val showId = backStackEntry.arguments?.getInt("showId") ?: 0
-                        com.hellby.cinema.ui.detail.DetailScreen(
-                            showId = showId,
-                            navController = navController
-                        )
+                    composable<DetailRoute> {
+                        com.hellby.cinema.ui.detail.DetailScreen(navController = navController)
                     }
                 }
             }

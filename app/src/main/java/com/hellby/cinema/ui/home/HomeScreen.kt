@@ -70,10 +70,8 @@ fun HomeScreen(
 
         when (val state = uiState) {
             is UiState.Loading -> {
-                if (state is UiState.Loading) {
-                    Box(modifier = Modifier.fillMaxSize().padding(paddingValues), contentAlignment = Alignment.Center) {
-                        LoadingView()
-                    }
+                Box(modifier = Modifier.fillMaxSize().padding(paddingValues), contentAlignment = Alignment.Center) {
+                    LoadingView()
                 }
             }
             is UiState.Error -> {
@@ -88,7 +86,7 @@ fun HomeScreen(
                     onRefresh = viewModel::refresh,
                     modifier = Modifier.padding(paddingValues)
                 ) {
-                    HomeContentList(content = content, onShowClick = { navController.navigate("DetailRoute?showId=$it") })
+                    HomeContentList(content = content, onShowClick = { navController.navigate(com.hellby.cinema.DetailRoute(it)) })
                 }
             }
         }

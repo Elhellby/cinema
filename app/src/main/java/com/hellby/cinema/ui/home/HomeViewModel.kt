@@ -3,10 +3,10 @@ package com.hellby.cinema.ui.home
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hellby.cinema.R
 import com.hellby.cinema.domain.model.HomeContent
 import com.hellby.cinema.domain.usecase.GetHomeContentUseCase
 import com.hellby.cinema.util.UiState
+import com.hellby.cinema.util.toUserMessageRes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,7 +39,7 @@ class HomeViewModel @Inject constructor(
             val result = getHomeContentUseCase(forceRefresh)
             result.fold(
                 onSuccess = { _uiState.value = UiState.Success(it) },
-                onFailure = { _uiState.value = UiState.Error(context.getString(R.string.error_generic), it) }
+                onFailure = { _uiState.value = UiState.Error(context.getString(it.toUserMessageRes()), it) }
             )
         }
     }

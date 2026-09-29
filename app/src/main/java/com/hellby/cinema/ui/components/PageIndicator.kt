@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.hellby.cinema.ui.theme.MaterialSpacing
 
 @Composable
 fun PageIndicator(
@@ -21,7 +22,7 @@ fun PageIndicator(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(MaterialSpacing.sm)
     ) {
         repeat(pageCount) { index ->
             val selected = index == currentPage

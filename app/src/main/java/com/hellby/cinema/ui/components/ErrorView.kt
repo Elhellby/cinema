@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.hellby.cinema.R
+import com.hellby.cinema.ui.theme.MaterialSpacing
 
 @Composable
 fun ErrorView(
@@ -25,10 +26,11 @@ fun ErrorView(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val spacing = MaterialSpacing
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(24.dp),
+            .padding(spacing.xxl),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -37,13 +39,13 @@ fun ErrorView(
             contentDescription = null,
             tint = MaterialTheme.colorScheme.error
         )
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(spacing.md))
         Text(
             text = message,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurface
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(spacing.lg))
         Button(onClick = onRetry) {
             Text(text = stringResource(R.string.retry))
         }

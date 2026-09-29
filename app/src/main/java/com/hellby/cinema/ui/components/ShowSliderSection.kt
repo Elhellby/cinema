@@ -11,8 +11,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.hellby.cinema.domain.model.Show
+import com.hellby.cinema.ui.theme.MaterialSpacing
 
 @Composable
 fun ShowSliderSection(
@@ -23,19 +23,20 @@ fun ShowSliderSection(
 ) {
     if (shows.isEmpty()) return
 
+    val spacing = MaterialSpacing
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(spacing.md)
     ) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier.padding(horizontal = spacing.lg)
         )
 
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(spacing.md),
+            contentPadding = PaddingValues(horizontal = spacing.lg),
             modifier = Modifier.fillMaxWidth()
         ) {
             items(

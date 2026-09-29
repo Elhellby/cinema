@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -25,6 +26,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
+import com.hellby.cinema.R
 
 @OptIn(androidx.media3.common.util.UnstableApi::class)
 @Composable
@@ -34,38 +36,39 @@ fun VideoPlayer(
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    val player = remember(context) { ExoPlayer.Builder(context).build() }
+    val exoPlayer = remember(context) { ExoPlayer.Builder(context).build() }
     var isReady by remember { mutableStateOf(false) }
     var buffering by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    val defaultErrorMessage = stringResource(R.string.video_error)
 
-    DisposableEffect(player) {
+    DisposableEffect(exoPlayer) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
-                Lifecycle.Event.ON_PAUSE, Lifecycle.Event.ON_STOP -> player.pause()
+                Lifecycle.Event.ON_PAUSE, Lifecycle.Event.ON_STOP -> exoPlayer.pause()
                 else -> Unit
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(observer)
-            player.release()
+            exoPlayer.release()
         }
     }
 
     LaunchedEffect(videoUrl) {
         val mediaItem = MediaItem.fromUri(Uri.parse(videoUrl))
-        player.setMediaItem(mediaItem)
-        player.prepare()
-        player.playWhenReady = false
-        player.addListener(object : Player.Listener {
+        exoPlayer.setMediaItem(mediaItem)
+        exoPlayer.prepare()
+        exoPlayer.playWhenReady = false
+        exoPlayer.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(playbackState: Int) {
                 buffering = playbackState == Player.STATE_BUFFERING
                 isReady = playbackState == Player.STATE_READY || playbackState == Player.STATE_ENDED
             }
 
             override fun onPlayerError(error: androidx.media3.common.PlaybackException) {
-                errorMessage = error.message ?: "Error reproduciendo video"
+                errorMessage = error.message ?: defaultErrorMessage
             }
         })
     }
@@ -80,7 +83,7 @@ fun VideoPlayer(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT
                     )
-                    player = this@VideoPlayer.player
+                    player = exoPlayer
                 }
             },
             modifier = Modifier.fillMaxSize()

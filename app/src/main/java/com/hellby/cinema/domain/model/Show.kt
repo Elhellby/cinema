@@ -13,7 +13,8 @@ data class Show(
     val status: String?,
     val runtime: Int?,
     val language: String?,
-    val network: String?
+    val network: String?,
+    val weight: Int? = null
 )
 
 data class CastMember(

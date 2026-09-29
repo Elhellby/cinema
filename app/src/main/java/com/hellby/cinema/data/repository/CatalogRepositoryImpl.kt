@@ -37,13 +37,15 @@ class CatalogRepositoryImpl @Inject constructor(
         val showsResult = remoteDataSource.getShows(0)
         val shows = showsResult.getOrElse { return@withContext Result.failure(it) }
         val mapped = shows.map { it.toDomain() }
-        val featured = mapped.sortedByDescending { it.rating ?: 0.0 }.take(8)
+        val featured = mapped.filter { it.imageUrl != null }
+            .sortedByDescending { it.rating ?: 0.0 }
+            .take(8)
         val sections = buildList {
             val latest = mapped.filter { !it.premiered.isNullOrBlank() }
                 .sortedByDescending { it.premiered ?: "" }
             if (latest.isNotEmpty()) add(HomeSection("Nuevos", latest.take(8)))
 
-            val popular = mapped.sortedByDescending { it.network?.length ?: 0 }
+            val popular = mapped.sortedByDescending { it.weight ?: 0 }
             if (popular.isNotEmpty()) add(HomeSection("Populares", popular.take(8)))
 
             val drama = mapped.filter { it.genres.any { genre -> genre.contains("Drama", ignoreCase = true) } }

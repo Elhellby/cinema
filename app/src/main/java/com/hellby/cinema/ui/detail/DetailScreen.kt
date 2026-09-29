@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,7 +42,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -57,13 +55,13 @@ import com.hellby.cinema.domain.model.ShowDetail
 import com.hellby.cinema.ui.components.ErrorView
 import com.hellby.cinema.ui.components.LoadingView
 import com.hellby.cinema.ui.components.PosterImage
+import com.hellby.cinema.ui.theme.MaterialSpacing
 import com.hellby.cinema.util.UiState
 import com.hellby.cinema.util.config.AppConfig
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
-    showId: Int,
     navController: NavController,
     viewModel: DetailViewModel = hiltViewModel()
 ) {
@@ -114,6 +112,8 @@ private fun DetailContent(
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
+    val spacing = MaterialSpacing
+    val notAvailable = stringResource(R.string.not_available)
 
     Column(
         modifier = modifier
@@ -140,8 +140,8 @@ private fun DetailContent(
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
-                    .padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
+                    .padding(spacing.xl),
+                verticalArrangement = Arrangement.spacedBy(spacing.xs + 2.dp)
             ) {
                 Text(
                     text = show.show.title,
@@ -152,9 +152,9 @@ private fun DetailContent(
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.Star, contentDescription = null, tint = Color(0xFFFFC857))
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = Modifier.width(spacing.xs))
                     Text(
-                        text = show.show.rating?.let { String.format("%.1f", it) } ?: "N/A",
+                        text = show.show.rating?.let { String.format("%.1f", it) } ?: notAvailable,
                         color = Color.White
                     )
                 }
@@ -164,21 +164,21 @@ private fun DetailContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 18.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+                .padding(horizontal = spacing.xl, vertical = spacing.lg + 2.dp),
+            verticalArrangement = Arrangement.spacedBy(spacing.md)
         ) {
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(text = show.show.premiered ?: "N/A")
-                Text(text = show.show.status ?: "N/A")
-                Text(text = show.show.runtime?.let { "$it min" } ?: "N/A")
+            Row(horizontalArrangement = Arrangement.spacedBy(spacing.md)) {
+                Text(text = show.show.premiered ?: notAvailable)
+                Text(text = show.show.status ?: notAvailable)
+                Text(text = show.show.runtime?.let { stringResource(R.string.runtime_minutes, it) } ?: notAvailable)
             }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(spacing.sm)) {
                 if (!show.show.language.isNullOrBlank()) Text(text = show.show.language)
                 if (!show.show.network.isNullOrBlank()) Text(text = show.show.network)
             }
 
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(spacing.sm)) {
                 show.show.genres.forEach { genre ->
                     AssistChip(onClick = {}, label = { Text(text = genre) })
                 }
@@ -194,9 +194,9 @@ private fun DetailContent(
                 color = MaterialTheme.colorScheme.primary
             )
 
-            if (!show.cast.isEmpty()) {
+            if (show.cast.isNotEmpty()) {
                 Text(text = stringResource(R.string.detail_cast), style = MaterialTheme.typography.titleMedium)
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(spacing.md)) {
                     items(show.cast) { member ->
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             PosterImage(

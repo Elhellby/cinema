@@ -18,4 +18,7 @@
     <string name="show_less">Ver menos</string>
     <string name="loading">Cargando…</string>
     <string name="empty_state">No hay contenido disponible.</string>
+    <string name="not_available">N/D</string>
+    <string name="runtime_minutes">%1$d min</string>
+    <string name="video_error">Error al reproducir el video.</string>
 </resources>

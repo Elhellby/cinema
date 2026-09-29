@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.hellby.cinema.domain.model.Show
+import com.hellby.cinema.ui.theme.MaterialSpacing
 
 @Composable
 fun ShowCard(
@@ -30,11 +31,12 @@ fun ShowCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val spacing = MaterialSpacing
     Card(
         modifier = modifier
-            .width(170.dp)
+            .width(spacing.posterWidth)
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(22.dp),
+        shape = RoundedCornerShape(spacing.cardCornerRadius),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column {
@@ -43,13 +45,13 @@ fun ShowCard(
                 contentDescription = show.title,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(220.dp)
-                    .clip(RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp)),
+                    .height(spacing.posterHeight)
+                    .clip(RoundedCornerShape(topStart = spacing.cardCornerRadius, topEnd = spacing.cardCornerRadius)),
             )
 
             Column(
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
+                modifier = Modifier.padding(horizontal = spacing.md, vertical = spacing.sm),
+                verticalArrangement = Arrangement.spacedBy(spacing.xs + 2.dp)
             ) {
                 val genre = show.genres.firstOrNull() ?: "General"
                 Text(
@@ -73,13 +75,13 @@ fun ShowCard(
                     overflow = TextOverflow.Ellipsis
                 )
 
-                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(spacing.xs + 2.dp)) {
                     Text(
                         text = show.premiered ?: "N/A",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    Spacer(Modifier.width(4.dp))
+                    Spacer(Modifier.width(spacing.xs))
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = null,

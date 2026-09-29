@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.hellby.cinema.domain.model.Show
+import com.hellby.cinema.ui.theme.MaterialSpacing
 import kotlin.math.absoluteValue
 
 @Composable
@@ -38,6 +39,7 @@ fun FeaturedCarousel(
 ) {
     if (shows.isEmpty()) return
 
+    val spacing = MaterialSpacing
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { shows.size })
 
     LaunchedEffect(shows.size) {
@@ -46,14 +48,13 @@ fun FeaturedCarousel(
 
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(spacing.md)
     ) {
         HorizontalPager(
             state = pagerState,
-            pageSpacing = 18.dp,
-            contentPadding = PaddingValues(horizontal = 30.dp),
-            pageNestedScrollConnection = null,
-            modifier = Modifier.height(440.dp)
+            pageSpacing = spacing.lg + 2.dp,
+            contentPadding = PaddingValues(horizontal = spacing.xxl + 6.dp),
+            modifier = Modifier.height(spacing.carouselHeight)
         ) { page ->
             val show = shows[page]
             val pageOffset = (
@@ -70,7 +71,7 @@ fun FeaturedCarousel(
                         alpha = 1f - (pageOffset * 0.5f).coerceIn(0f, 0.55f)
                     }
                     .clickable { onShowClick(show.id) },
-                shape = RoundedCornerShape(28.dp)
+                shape = RoundedCornerShape(spacing.carouselCornerRadius)
             ) {
                 Box(modifier = Modifier.fillMaxSize()) {
                     PosterImage(
@@ -94,8 +95,8 @@ fun FeaturedCarousel(
                     Column(
                         modifier = Modifier
                             .align(Alignment.BottomStart)
-                            .padding(20.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                            .padding(spacing.xl),
+                        verticalArrangement = Arrangement.spacedBy(spacing.xs)
                     ) {
                         Text(
                             text = show.title,

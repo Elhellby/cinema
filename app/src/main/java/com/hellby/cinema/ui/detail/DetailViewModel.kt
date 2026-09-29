@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hellby.cinema.R
 import com.hellby.cinema.domain.model.ShowDetail
 import com.hellby.cinema.domain.usecase.GetShowDetailUseCase
 import com.hellby.cinema.util.UiState
+import com.hellby.cinema.util.toUserMessageRes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +38,7 @@ class DetailViewModel @Inject constructor(
             val result = getShowDetailUseCase(showId)
             result.fold(
                 onSuccess = { _uiState.value = UiState.Success(it) },
-                onFailure = { _uiState.value = UiState.Error(context.getString(R.string.error_generic), it) }
+                onFailure = { _uiState.value = UiState.Error(context.getString(it.toUserMessageRes()), it) }
             )
         }
     }

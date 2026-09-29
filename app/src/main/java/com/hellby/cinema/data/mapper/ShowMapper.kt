@@ -21,7 +21,8 @@ internal fun ShowDto.toDomain(): Show {
         status = status,
         runtime = runtime,
         language = language,
-        network = network?.name ?: webChannel?.name
+        network = network?.name ?: webChannel?.name,
+        weight = weight
     )
 }
 
