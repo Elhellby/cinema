@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.foundation.layout.Row
+import androidx.compose.material.icons.outlined.MovieFilter
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.res.stringResource
@@ -64,6 +65,14 @@ fun HomeScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
+                    navigationIcon = {
+                        IconButton(onClick = { /* Handle navigation icon click */ }) {
+                            Icon(
+                                imageVector = Icons.Outlined.MovieFilter,
+                                contentDescription = stringResource(R.string.home_title)
+                            )
+                        }
+                    },
                     title = { Text(stringResource(R.string.home_title)) },
                     actions = {
                         IconButton(onClick = { showMenu = true }) {

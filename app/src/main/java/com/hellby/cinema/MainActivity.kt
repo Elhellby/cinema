@@ -53,10 +53,10 @@ class MainActivity : ComponentActivity() {
                 ThemeMode.LIGHT -> false
                 ThemeMode.DARK -> true
             }
-            window.statusBarColor = androidx.compose.material3.MaterialTheme.colorScheme.background.toArgb()
-            window.navigationBarColor = androidx.compose.material3.MaterialTheme.colorScheme.background.toArgb()
-
             CinemaTheme(darkTheme = useDarkTheme) {
+                window.statusBarColor = androidx.compose.material3.MaterialTheme.colorScheme.background.toArgb()
+                window.navigationBarColor = androidx.compose.material3.MaterialTheme.colorScheme.background.toArgb()
+
                 val navController: NavHostController = rememberNavController()
                 NavHost(navController = navController, startDestination = SplashRoute) {
                     composable<SplashRoute> {
