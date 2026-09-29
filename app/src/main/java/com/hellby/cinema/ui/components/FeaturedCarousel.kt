@@ -1,5 +1,6 @@
 package com.hellby.cinema.ui.components
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +19,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.delay
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,6 +33,7 @@ import androidx.compose.ui.util.lerp
 import com.hellby.cinema.domain.model.Show
 import com.hellby.cinema.ui.theme.MaterialSpacing
 import kotlin.math.absoluteValue
+import kotlinx.coroutines.launch
 
 @Composable
 fun FeaturedCarousel(
@@ -41,9 +45,23 @@ fun FeaturedCarousel(
 
     val spacing = MaterialSpacing
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { shows.size })
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(shows.size) {
         if (pagerState.currentPage >= shows.size) pagerState.scrollToPage(0)
+    }
+
+    LaunchedEffect(pagerState, shows.size) {
+        while (true) {
+            delay(2500)
+            if (!pagerState.isScrollInProgress && shows.size > 1) {
+                val nextPage = (pagerState.currentPage + 1) % shows.size
+                pagerState.animateScrollToPage(
+                    page = nextPage,
+                    animationSpec = tween(durationMillis = 900)
+                )
+            }
+        }
     }
 
     Column(
@@ -117,6 +135,18 @@ fun FeaturedCarousel(
             }
         }
 
-        PageIndicator(pageCount = shows.size, currentPage = pagerState.currentPage, modifier = Modifier.align(Alignment.CenterHorizontally))
+        PageIndicator(
+            pageCount = shows.size,
+            currentPage = pagerState.currentPage,
+            onPageSelected = { index ->
+                coroutineScope.launch {
+                    pagerState.animateScrollToPage(
+                        page = index,
+                        animationSpec = tween(durationMillis = 900)
+                    )
+                }
+            },
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
     }
 }

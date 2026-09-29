@@ -1,6 +1,7 @@
 package com.hellby.cinema.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,7 @@ import com.hellby.cinema.ui.theme.MaterialSpacing
 fun PageIndicator(
     pageCount: Int,
     currentPage: Int,
+    onPageSelected: (Int) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -31,8 +33,10 @@ fun PageIndicator(
                     .size(if (selected) 10.dp else 8.dp)
                     .clip(CircleShape)
                     .background(
-                        if (selected) MaterialTheme.colorScheme.primary else Color.Transparent
+                        if (selected) MaterialTheme.colorScheme.primary else Color(0xFF9E9E9E)
                     )
+                    .clickable { onPageSelected(index) }
+
             )
         }
     }
