@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Cinema</string>
+    <string name="home_title">Cinema</string>
+    <string name="featured_title">Destacados</string>
+    <string name="settings_title">Tema</string>
+    <string name="retry">Reintentar</string>
+    <string name="error_generic">Algo salió mal. Inténtalo de nuevo.</string>
+    <string name="error_no_connection">No tienes conexión a internet.</string>
+    <string name="error_timeout">La conexión tardó demasiado.</string>
+    <string name="error_server">No pudimos cargar la información.</string>
+    <string name="theme_system">Sistema</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Oscuro</string>
+    <string name="detail_trailer">Trailer</string>
+    <string name="detail_cast">Reparto</string>
+    <string name="detail_official_site">Sitio oficial</string>
+    <string name="show_more">Ver más</string>
+    <string name="show_less">Ver menos</string>
+    <string name="loading">Cargando…</string>
+    <string name="empty_state">No hay contenido disponible.</string>
+</resources>
