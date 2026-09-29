@@ -66,13 +66,20 @@ fun DetailScreen(
     viewModel: DetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
     val appConfig = AppConfig()
+    val title = (uiState as? UiState.Success)?.data?.show?.title
+        ?: ""
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = context.getString(R.string.app_name)) },
+                title = {
+                    Text(
+                        text = title,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
