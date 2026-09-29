@@ -11,9 +11,13 @@ import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.delay
+import com.hellby.cinema.ui.splash.SplashScreen
 import com.hellby.cinema.domain.model.ThemeMode
 import com.hellby.cinema.ui.home.HomeScreen
 import com.hellby.cinema.ui.home.HomeViewModel
@@ -24,6 +28,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 object HomeRoute
+
+@Serializable
+object SplashRoute
+
+@Serializable
+object SettingsRoute
 
 @Serializable
 data class DetailRoute(val showId: Int)
@@ -48,10 +58,29 @@ class MainActivity : ComponentActivity() {
 
             CinemaTheme(darkTheme = useDarkTheme) {
                 val navController: NavHostController = rememberNavController()
-                NavHost(navController = navController, startDestination = HomeRoute) {
+                NavHost(navController = navController, startDestination = SplashRoute) {
+                    composable<SplashRoute> {
+                        SplashScreen()
+                        LaunchedEffect(Unit) {
+                            delay(1_200)
+                            navController.navigate(HomeRoute) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                        }
+                    }
                     composable<HomeRoute> {
                         val homeViewModel: HomeViewModel = hiltViewModel()
                         HomeScreen(viewModel = homeViewModel, navController = navController)
+                    }
+                    composable<SettingsRoute> {
+                        val settingsViewModel: SettingsViewModel = hiltViewModel()
+                        com.hellby.cinema.ui.settings.SettingsScreen(
+                            viewModel = settingsViewModel,
+                            onBack = { navController.popBackStack() }
+                        )
                     }
                     composable<DetailRoute> {
                         com.hellby.cinema.ui.detail.DetailScreen(navController = navController)

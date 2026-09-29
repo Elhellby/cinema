@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">Cinema</string>
+    <string name="app_version">Versión %1$s</string>
     <string name="home_title">Cinema</string>
     <string name="featured_title">Destacados</string>
     <string name="settings_title">Tema</string>
+    <string name="menu_title">Menú</string>
+    <string name="menu_settings">Configuración</string>
     <string name="retry">Reintentar</string>
     <string name="error_generic">Algo salió mal. Inténtalo de nuevo.</string>
     <string name="error_no_connection">No tienes conexión a internet.</string>
